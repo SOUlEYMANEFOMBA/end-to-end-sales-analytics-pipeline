@@ -1,0 +1,38 @@
+services :
+  python_dev:
+   image:  mcr.microsoft.com/devcontainers/python:1-3.11-bullseye
+   container_name: python_devcontainer
+   volumes :
+   - ..:/workspace
+   working_dir: /workspace
+   command: tail -f /dev/null
+   networks:
+    - dbt
+  db:
+    image: postgres:18
+    container_name: local_pgdb
+    restart : always 
+    ports :
+     - "5432:5432"
+    environment:
+      POSTGRES_USER : user-name
+      POSTGRES_PASSWORD : strong-password
+      POSTGRES_DB : adventureworks
+    networks:
+     - dbt
+  pdadmin :
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart : always
+    ports :
+     - "8888:80"
+    volumes:
+     - ../db_volume/pgadmin-data:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
+      PGADMIN_DEFAULT_PASSWORD: strong-password
+    networks:
+     - dbt
+
+networks:
+  dbt :

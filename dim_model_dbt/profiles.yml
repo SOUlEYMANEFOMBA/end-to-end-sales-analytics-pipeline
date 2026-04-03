@@ -1,0 +1,12 @@
+dim_model_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: db
+      user: user-name
+      password: strong-password
+      port: 5432
+      dbname: adventureworks
+      schema: dbo 
+      threads: 12
